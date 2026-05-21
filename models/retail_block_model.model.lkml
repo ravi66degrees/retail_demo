@@ -1,4 +1,4 @@
-connection: "looker-private-demo"
+connection: "pandera-demo-data-science"
 label: "Retail"
 
 include: "/views/**/*.view" # include all the views

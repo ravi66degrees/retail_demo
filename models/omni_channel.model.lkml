@@ -1,8 +1,7 @@
-connection: "looker-private-demo"
+connection: "pandera-demo-data-science"
 
 include: "/omni_channel/*.view.lkml"
 include: "/omni_channel/*.dashboard.lookml"
-
 
 datagroup: new_day {
   sql_trigger: SELECT CURRENT_DATE() ;;
