@@ -7,12 +7,14 @@ view: stores {
   }
 
   dimension: id {
+    description: "Primary key for this record."
     primary_key: yes
     type: number
     sql: ${TABLE}.ID ;;
   }
 
   dimension: latitude {
+    description: "Latitude coordinate."
     type: number
     hidden: yes
     sql: ${TABLE}.LATITUDE ;;
@@ -20,12 +22,14 @@ view: stores {
   }
 
   dimension: longitude {
+    description: "Longitude coordinate."
     type: number
     hidden: yes
     sql: ${TABLE}.LONGITUDE ;;
   }
 
   dimension: name {
+    description: "Display name for this entity."
     drill_fields: [products.category]
     label: "Store Name"
     type: string
@@ -58,12 +62,14 @@ view: stores {
   }
 
   dimension: state {
+    description: "State or province."
     type: string
     group_label: "Store Info"
     sql: ${TABLE}.State ;;
   }
 
   dimension: sq_ft {
+    description: "Store selling area in square feet."
     type: string
     group_label: "Store Info"
     sql: ${TABLE}.sq_ft ;;
@@ -72,6 +78,7 @@ view: stores {
   ##### DERIVED DIMENSIONS #####
 
   dimension: location {
+    description: "Geographic location derived from latitude and longitude."
     type: location
     group_label: "Store Info"
     sql_latitude: ${latitude} ;;
@@ -79,6 +86,7 @@ view: stores {
   }
 
   dimension: store_size_grouping {
+    description: "Store size grouping."
     type: string
     sql: CASE
       WHEN ${sq_ft} <= 70000 THEN 'S'
@@ -90,6 +98,7 @@ view: stores {
   }
 
   dimension: store_size_grouping_order {
+    description: "Store size grouping order."
     hidden: yes
     type: number
     sql: CASE ${store_size_grouping}
@@ -102,12 +111,14 @@ view: stores {
   }
 
   filter: store_for_comparison {
+    description: "Filter on store for comparison."
     type: string
     group_label: "Store Comparison"
     suggest_dimension: stores.name
   }
 
   dimension: store_comparison_vs_stores_in_tier {
+    description: "Store comparison vs stores in tier."
     type: string
     group_label: "Store Comparison"
     sql: CASE
@@ -117,6 +128,7 @@ view: stores {
   }
 
   dimension: store_comparison_vs_stores_in_tier_with_weather {
+    description: "Store comparison vs stores in tier with weather."
     type: string
     group_label: "Store Comparison"
     sql: CASE
@@ -143,6 +155,7 @@ view: stores {
   }
 
   dimension: store_comparison_vs_tier {
+    description: "Store comparison vs tier."
     type: string
     group_label: "Store Comparison"
     sql: CASE

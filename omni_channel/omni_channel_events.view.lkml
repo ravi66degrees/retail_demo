@@ -28,17 +28,20 @@ view: omni_channel_events {
   }
 
   dimension: id {
+    description: "Primary key for this record."
     primary_key: yes
     type: number
     sql: ${TABLE}.ID ;;
   }
 
   dimension: browser {
+    description: "Browser."
     type: string
     sql: ${TABLE}.BROWSER ;;
   }
 
   dimension_group: created {
+    description: "Time attributes for Created (available timeframes such as date, week, and month)."
     type: time
     timeframes: [
       raw,
@@ -53,65 +56,78 @@ view: omni_channel_events {
   }
 
   dimension: customer_id {
+    description: "Unique identifier for a customer."
     type: number
     sql: ${TABLE}.CUSTOMER_ID ;;
   }
 
   dimension: event_type {
+    description: "Event type."
     type: string
     sql: ${TABLE}.EVENT_TYPE ;;
   }
 
   dimension: ip_address {
+    description: "Ip address."
     type: string
     sql: ${TABLE}.IP_ADDRESS ;;
   }
 
   dimension: os {
+    description: "Os."
     type: string
     sql: ${TABLE}.OS ;;
   }
 
   dimension: sequence_number {
+    description: "Sequence number."
     type: number
     sql: ${TABLE}.SEQUENCE_NUMBER ;;
   }
 
   dimension: session_id {
+    description: "Identifier for session."
     type: string
     sql: ${TABLE}.SESSION_ID ;;
   }
 
   dimension: traffic_source {
+    description: "Traffic source."
     type: string
     sql: ${TABLE}.TRAFFIC_SOURCE ;;
   }
 
   dimension: uri {
+    description: "Uri."
     type: string
     sql: ${TABLE}.URI ;;
   }
 
   measure: event_count {
+    description: "Count of tracked digital events."
     type: count
   }
 
   measure: cart_adds {
+    description: "Number of add-to-cart events."
     filters: [event_type: "Cart"]
     type: count
   }
 
   measure: purchases {
+    description: "Number of purchase events in the digital channel."
     filters: [event_type: "Purchase"]
     type: count
   }
 
   measure: acquisition_source {
+    description: "Marketing or traffic source attributed to customer acquisition."
     type: string
     sql: SPLIT(MIN(CONCAT(CAST(${TABLE}.CREATED_AT as string),'|',${TABLE}.TRAFFIC_SOURCE)),'|')[OFFSET(1)] ;;
   }
 
   measure: session_count {
+    description: "Count of website or app sessions."
     type: count_distinct
     sql: ${session_id} ;;
   }

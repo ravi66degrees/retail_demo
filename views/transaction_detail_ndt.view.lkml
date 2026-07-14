@@ -50,41 +50,87 @@ view: transaction_detail {
   }
 
 
-  dimension: transaction_id {type: number}
-  dimension: customer_id {type: number hidden: yes}
-  dimension: channel_id {type: number hidden: yes}
-  dimension: product_id {type: number hidden: yes}
-  dimension: store_id {type: number hidden: yes}
-  dimension: sale_price {type: number}
-  dimension: gross_margin {type: number}
+  dimension: transaction_id {
+    description: "Unique identifier for a transaction/receipt."
+    type: number
+  }
+  dimension: customer_id {
+    description: "Unique identifier for a customer."
+    type: number hidden: yes
+  }
+  dimension: channel_id {
+    description: "Channel id."
+    type: number hidden: yes
+  }
+  dimension: product_id {
+    description: "Unique identifier for a product."
+    type: number hidden: yes
+  }
+  dimension: store_id {
+    description: "Unique identifier for a store location."
+    type: number hidden: yes
+  }
+  dimension: sale_price {
+    description: "Sale price."
+    type: number
+  }
+  dimension: gross_margin {
+    description: "Gross margin amount in currency."
+    type: number
+  }
   dimension_group: transaction {
+    description: "Time attributes for Transaction (available timeframes such as date, week, and month)."
     type: time
     sql: ${TABLE}.transaction_raw ;;
   }
   dimension: latitude {
+    description: "Latitude coordinate."
     view_label: "Store"
     type: number
     hidden: yes
   }
   dimension: longitude {
+    description: "Longitude coordinate."
     view_label: "Store"
     type: number
     hidden: yes
   }
-  dimension: store_name {view_label: "Store"}
-  dimension: store_state {view_label: "Store"}
-  dimension: store_sq_ft {view_label: "Store" type: number}
+  dimension: store_name {
+    description: "Name of the store location."
+    view_label: "Store"
+  }
+  dimension: store_state {
+    description: "Store state."
+    view_label: "Store"
+  }
+  dimension: store_sq_ft {
+    description: "Store sq ft."
+    view_label: "Store" type: number
+  }
   dimension: brand {view_label: "Product"}  # Optional
-  dimension: category {view_label: "Product"}
+  dimension: category {
+    description: "Product category."
+    view_label: "Product"
+  }
   dimension: department {view_label: "Product"}  # Optional
   dimension: area {view_label: "Product"}  # Optional
-  dimension: product_name {view_label: "Product"}
+  dimension: product_name {
+    description: "Product display name."
+    view_label: "Product"
+  }
   dimension: sku {view_label: "Product"}  # Optional
-  dimension: channel_name {view_label: "Channel"}
+  dimension: channel_name {
+    description: "Channel name."
+    view_label: "Channel"
+  }
   dimension: traffic_source {view_label: "Customer"}  # Optional
   dimension: city {view_label: "Customer"}  # Optional
-  dimension: country {view_label: "Customer"}
+  dimension: country {
+    description: "Country."
+    view_label: "Customer"
+  }
   dimension_group: registered {
+    description: "Time attributes for Registered (available timeframes such as date, week, and month)."
     view_label: "Customer"
     type: time
     timeframes: [raw,date,week,month,year,day_of_week,week_of_year,month_name,quarter,quarter_of_year]
@@ -95,24 +141,45 @@ view: transaction_detail {
   dimension: gender {view_label: "Customer"}  # Optional
   dimension: last_name {view_label: "Customer"}  # Optional
   dimension: address_latitude {
+    description: "Address latitude."
     view_label: "Customer"
     type: number
   }  # Optional
   dimension: address_longitude {
+    description: "Address longitude."
     view_label: "Customer"
     type: number
   }  # Optional
   dimension: state {view_label: "Customer"}  # Optional
   dimension: postcode {
+    description: "Postcode."
     view_label: "Customer"
     type: zipcode
   }
-  dimension: customer_average_basket_size { type: number view_label: "Customer" }
-  dimension: customer_lifetime_gross_margin { type: number view_label: "Customer" }
-  dimension: customer_lifetime_sales { type: number view_label: "Customer" }
-  dimension: customer_lifetime_transactions { type: number view_label: "Customer" }
-  dimension: customer_lifetime_quantity { type: number view_label: "Customer" }
-  dimension_group: customer_first_purchase { type: time timeframes:[raw,date,week,month] view_label: "Customer" }
+  dimension: customer_average_basket_size {
+    description: "Customer average basket size."
+    type: number view_label: "Customer"
+  }
+  dimension: customer_lifetime_gross_margin {
+    description: "Customer lifetime gross margin."
+    type: number view_label: "Customer"
+  }
+  dimension: customer_lifetime_sales {
+    description: "Customer lifetime sales."
+    type: number view_label: "Customer"
+  }
+  dimension: customer_lifetime_transactions {
+    description: "Customer lifetime transactions."
+    type: number view_label: "Customer"
+  }
+  dimension: customer_lifetime_quantity {
+    description: "Customer lifetime quantity."
+    type: number view_label: "Customer"
+  }
+  dimension_group: customer_first_purchase {
+    description: "Customer first purchase."
+    type: time timeframes:[raw,date,week,month] view_label: "Customer"
+  }
 
   ##### DERIVED DIMENSIONS #####
 
@@ -127,6 +194,7 @@ view: transaction_detail {
     ##### Stores #####
 
   dimension: store_location {
+    description: "Store location."
     view_label: "Store"
     type: location
     sql_latitude: ${latitude} ;;
@@ -134,6 +202,7 @@ view: transaction_detail {
   }
 
   dimension: store_size_grouping {
+    description: "Store size grouping."
     view_label: "Store"
     type: string
     sql: CASE
@@ -146,6 +215,7 @@ view: transaction_detail {
   }
 
   dimension: store_size_grouping_order {
+    description: "Store size grouping order."
     view_label: "Store"
     hidden: yes
     type: number
@@ -162,6 +232,7 @@ view: transaction_detail {
   ##### MEASURES #####
 
   measure: number_of_transactions {
+    description: "Count of distinct transactions."
     type: count_distinct
     sql: ${transaction_id} ;;
     value_format_name: decimal_0
@@ -169,6 +240,7 @@ view: transaction_detail {
   }
 
   measure: number_of_customers {
+    description: "Count of distinct customers."
     type: count_distinct
     sql: ${customer_id} ;;
     value_format_name: decimal_0
@@ -176,6 +248,7 @@ view: transaction_detail {
   }
 
   measure: number_of_stores {
+    description: "Count metric: number of stores."
     view_label: "Store"
     type: count_distinct
     sql: ${store_id} ;;
@@ -184,6 +257,7 @@ view: transaction_detail {
   }
 
   measure: total_sales {
+    description: "Sum of sale price / revenue."
     type: sum
     sql: ${sale_price} ;;
     value_format_name: usd_0
@@ -191,6 +265,7 @@ view: transaction_detail {
   }
 
   measure: total_gross_margin {
+    description: "Sum of gross margin dollars."
     type: sum
     sql: ${gross_margin} ;;
     value_format_name: usd_0
@@ -198,6 +273,7 @@ view: transaction_detail {
   }
 
   measure: total_quantity {
+    description: "Sum of units sold."
     type: sum
     sql: 1 ;;
     value_format_name: decimal_0
@@ -205,6 +281,7 @@ view: transaction_detail {
   }
 
   measure: average_basket_size {
+    description: "Average sales value per transaction (basket size)."
     type: number
     sql: ${total_sales}/NULLIF(${number_of_transactions},0) ;;
     value_format_name: usd
@@ -212,6 +289,7 @@ view: transaction_detail {
   }
 
   measure: average_item_price {
+    description: "Average sale price per item."
     type: number
     sql: ${total_sales}/NULLIF(${total_quantity},0) ;;
     value_format_name: usd
@@ -219,6 +297,7 @@ view: transaction_detail {
   }
 
   measure: number_of_customer_transactions {
+    description: "Count of transactions associated with a known customer."
     hidden: yes
     type: count_distinct
     sql: ${transaction_id} ;;
@@ -229,6 +308,7 @@ view: transaction_detail {
   }
 
   measure: percent_customer_transactions {
+    description: "Share of transactions linked to identified customers."
     type: number
     sql: ${number_of_customer_transactions}/NULLIF(${number_of_transactions},0) ;;
     value_format_name: percent_1

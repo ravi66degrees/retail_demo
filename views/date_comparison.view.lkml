@@ -2,11 +2,13 @@ view: date_comparison {
   extension: required
 
   filter: date_comparison_filter {
+    description: "Primary date range used for period-over-period comparison."
     view_label: "Date Comparison"
     type: date
   }
 
   parameter: comparison_type {
+    description: "Period comparison mode: year, week, YTD, or WTD."
     view_label: "Date Comparison"
     type: unquoted
     allowed_value: {
@@ -29,6 +31,7 @@ view: date_comparison {
   }
 
   dimension: selected_comparison {
+    description: "Label for the current vs prior comparison period bucket."
     view_label: "Date Comparison"
     sql: {% if comparison_type._parameter_value == "year" %}
     ${this_year_vs_last_year}
@@ -44,6 +47,7 @@ view: date_comparison {
   }
 
   dimension: this_year_vs_last_year {
+    description: "This year vs last year."
     hidden: yes
     view_label: "Date Comparison"
     type: string
@@ -54,6 +58,7 @@ view: date_comparison {
   }
 
   dimension: this_week_vs_last_week {
+    description: "This week vs last week."
     hidden: yes
     view_label: "Date Comparison"
     type: string
@@ -63,6 +68,7 @@ view: date_comparison {
     END;;
   }
   dimension: ytd_vs_lytd {
+    description: "Ytd vs lytd."
     hidden: yes
     view_label: "Date Comparison"
     type: string
@@ -73,6 +79,7 @@ view: date_comparison {
   }
 
   dimension: wtd_vs_lwtd {
+    description: "Wtd vs lwtd."
     hidden: yes
     view_label: "Date Comparison"
     type: string

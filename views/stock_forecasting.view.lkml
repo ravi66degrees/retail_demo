@@ -24,23 +24,30 @@ view: stock_forecasting_explore_base {
       }
     }
   }
-  filter: transaction_week_filter { type: date}
+  filter: transaction_week_filter {
+    description: "Filter controlling which transaction weeks are included in stock forecasting."
+    type: date
+  }
   dimension_group: transaction {
+    description: "Time attributes for Transaction (available timeframes such as date, week, and month)."
     type: time
     timeframes: [week,month,year]
     sql: TIMESTAMP(CAST(${TABLE}.transaction_week AS DATE)) ;;
   }
   dimension: transaction_week_of_year {
+    description: "Transaction week of year."
     group_label: "Transaction Date"
     type: number
     sql: IFNULL(${transaction_week_of_year_for_join},${stock_forecasting_prediction.transaction_week_of_year}) ;;
   }
   dimension: transaction_week_of_year_for_join {
+    description: "Transaction week of year for join."
     hidden: yes
     type: number
     sql:${TABLE}.transaction_week_of_year;;
   }
   dimension: product_name {
+    description: "Product display name."
     sql: IFNULL(${product_name_for_join},${stock_forecasting_prediction.product_name}) ;;
     link: {
       label: "Drive attachments for {{rendered_value}}"
@@ -49,60 +56,76 @@ view: stock_forecasting_explore_base {
     }
   }
   dimension: product_name_for_join {
+    description: "Product name for join."
     hidden: yes
     type: string
     sql:${TABLE}.product_name;;
   }
   dimension: product_image {
+    description: "Product image."
     view_label: "Product Detail 📦"
     html: <img src="https://us-central1-looker-private-demo.cloudfunctions.net/imageSearch?q={{value | encode_uri }}" style="height: 50px; max-width: 150px;" /> ;;
   }
   dimension: department {
+    description: "Product department."
     view_label: "Product Detail 📦"
   }
   dimension: category {
+    description: "Product category."
     view_label: "Product Detail 📦"
   }
   dimension: brand {
+    description: "Product brand."
     view_label: "Product Detail 📦"
   }
   dimension: area {
+    description: "High-level product area grouping."
     view_label: "Product Detail 📦"
   }
   dimension: store_id {
+    description: "Unique identifier for a store location."
     hidden: yes
     type: number
     sql: IFNULL(${store_id_for_join},${stock_forecasting_prediction.store_id}) ;;
   }
   dimension: store_id_for_join {
+    description: "Store id for join."
     hidden: yes
     type: number
     sql: ${TABLE}.store_id ;;
   }
-  dimension: store_name {}
+  dimension: store_name {
+    description: "Name of the store location."
+  }
   dimension: number_of_customers {
+    description: "Count of distinct customers."
     value_format: "#,##0"
     type: number
   }
   dimension: number_of_transactions {
+    description: "Count of distinct transactions."
     value_format: "#,##0"
     type: number
   }
   dimension: number_of_customer_transactions {
+    description: "Count of transactions associated with a known customer."
     value_format: "#,##0"
     type: number
   }
   dimension: gross_margin {
+    description: "Gross margin amount in currency."
     label: "Transactions Gross Margin"
     value_format: "$#,##0"
     type: number
   }
   dimension: quantity {
+    description: "Quantity of units."
     label: "Transactions Quantity"
     value_format: "#,##0"
     type: number
   }
   dimension: sales {
+    description: "Transactions Sales."
     label: "Transactions Sales"
     value_format: "$#,##0"
     type: number
@@ -117,6 +140,7 @@ view: stock_forecasting_explore_base {
   ##### MEASURES #####
 
   measure: total_number_of_transactions {
+    description: "Sum of number of transactions for the selected rows."
     type: sum
     sql: ${number_of_transactions} ;;
     value_format_name: decimal_0
@@ -124,6 +148,7 @@ view: stock_forecasting_explore_base {
   }
 
   measure: total_number_of_customer_transactions {
+    description: "Sum of number of customer transactions for the selected rows."
     hidden: yes
     type: sum
     sql: ${number_of_customer_transactions} ;;
@@ -132,6 +157,7 @@ view: stock_forecasting_explore_base {
   }
 
   measure: total_number_of_customers {
+    description: "Sum of number of customers for the selected rows."
     type: sum
     sql: ${number_of_customers} ;;
     value_format_name: decimal_0
@@ -139,6 +165,7 @@ view: stock_forecasting_explore_base {
   }
 
   measure: percent_customer_transactions {
+    description: "Share of transactions linked to identified customers."
     type: number
     sql: ${number_of_customer_transactions}/NULLIF(${number_of_transactions},0) ;;
     value_format_name: percent_1
@@ -146,6 +173,7 @@ view: stock_forecasting_explore_base {
   }
 
   measure: total_sales {
+    description: "Sum of sale price / revenue."
     type: sum
     sql: ${sales} ;;
     value_format_name: usd_0
@@ -153,6 +181,7 @@ view: stock_forecasting_explore_base {
   }
 
   measure: total_gross_margin {
+    description: "Sum of gross margin dollars."
     type: sum
     sql: ${gross_margin} ;;
     value_format_name: usd_0
@@ -160,6 +189,7 @@ view: stock_forecasting_explore_base {
   }
 
   measure: total_quantity {
+    description: "Sum of units sold."
     label: "Total Stock"
     type: sum
     sql: ${quantity} ;;
@@ -168,6 +198,7 @@ view: stock_forecasting_explore_base {
   }
 
   measure: average_basket_size {
+    description: "Average sales value per transaction (basket size)."
     type: number
     sql: ${total_sales}/NULLIF(${total_number_of_transactions},0) ;;
     value_format_name: usd
@@ -175,6 +206,7 @@ view: stock_forecasting_explore_base {
   }
 
   measure: average_item_price {
+    description: "Average sale price per item."
     type: number
     sql: ${total_sales}/NULLIF(${total_quantity},0) ;;
     value_format_name: usd
@@ -182,12 +214,14 @@ view: stock_forecasting_explore_base {
   }
 
   measure: stock_difference {
+    description: "Stock difference for the selected rows."
     type: number
     sql: ${stock_forecasting_prediction.forecasted_quantity}-${total_quantity} ;;
     value_format_name: decimal_0
   }
 
   measure: stock_difference_value {
+    description: "Stock difference value for the selected rows."
     type: number
     sql: ${stock_difference}*${average_item_price} ;;
     value_format_name: usd
@@ -210,13 +244,27 @@ view: stock_forecasting_product_store_week_facts {
       }
     }
   }
-  dimension: transaction_week_of_year {}
-  dimension: id {}
-  dimension: name {}
-  dimension: category {}
-  dimension: total_quantity {}
-  dimension: store_size_grouping {}
-  dimension: sq_ft {}
+  dimension: transaction_week_of_year {
+    description: "Week-of-year number for the transaction week."
+  }
+  dimension: id {
+    description: "Primary key for this record."
+  }
+  dimension: name {
+    description: "Display name for this entity."
+  }
+  dimension: category {
+    description: "Product category."
+  }
+  dimension: total_quantity {
+    description: "Sum of units sold."
+  }
+  dimension: store_size_grouping {
+    description: "Store size band derived from square footage."
+  }
+  dimension: sq_ft {
+    description: "Store selling area in square feet."
+  }
 }
 
 view: stock_forecasting_product_store_week_facts_prior_year {
@@ -239,17 +287,39 @@ view: stock_forecasting_product_store_week_facts_prior_year {
       }
     }
   }
-  dimension: transaction_week_of_year {}
-  dimension: id {}
-  dimension: name {}
-  dimension: total_quantity {}
-  dimension: average_basket_size {}
-  dimension: average_item_price {}
-  dimension: total_sales {}
-  dimension: total_gross_margin {}
-  dimension: percent_customer_transactions {}
-  dimension: number_of_transactions {}
-  dimension: number_of_customers {}
+  dimension: transaction_week_of_year {
+    description: "Week-of-year number for the transaction week."
+  }
+  dimension: id {
+    description: "Primary key for this record."
+  }
+  dimension: name {
+    description: "Display name for this entity."
+  }
+  dimension: total_quantity {
+    description: "Sum of units sold."
+  }
+  dimension: average_basket_size {
+    description: "Average sales value per transaction (basket size)."
+  }
+  dimension: average_item_price {
+    description: "Average sale price per item."
+  }
+  dimension: total_sales {
+    description: "Total sales."
+  }
+  dimension: total_gross_margin {
+    description: "Sum of gross margin dollars."
+  }
+  dimension: percent_customer_transactions {
+    description: "Share of transactions linked to identified customers."
+  }
+  dimension: number_of_transactions {
+    description: "Count of distinct transactions."
+  }
+  dimension: number_of_customers {
+    description: "Count of distinct customers."
+  }
 }
 
 view: stock_forecasting_store_week_facts_prior_year {
@@ -275,20 +345,48 @@ view: stock_forecasting_store_week_facts_prior_year {
       }
     }
   }
-  dimension: transaction_week_of_year {}
-  dimension: id {}
-  dimension: name {}
-  dimension: total_quantity {}
-  dimension: average_basket_size {}
-  dimension: average_item_price {}
-  dimension: average_daily_precipitation {}
-  dimension: average_max_temparature {}
-  dimension: average_min_temparature {}
-  dimension: total_sales {}
-  dimension: total_gross_margin {}
-  dimension: percent_customer_transactions {}
-  dimension: number_of_transactions {}
-  dimension: number_of_customers {}
+  dimension: transaction_week_of_year {
+    description: "Week-of-year number for the transaction week."
+  }
+  dimension: id {
+    description: "Primary key for this record."
+  }
+  dimension: name {
+    description: "Display name for this entity."
+  }
+  dimension: total_quantity {
+    description: "Sum of units sold."
+  }
+  dimension: average_basket_size {
+    description: "Average sales value per transaction (basket size)."
+  }
+  dimension: average_item_price {
+    description: "Average sale price per item."
+  }
+  dimension: average_daily_precipitation {
+    description: "Average daily precipitation."
+  }
+  dimension: average_max_temparature {
+    description: "Average maximum temperature for the period."
+  }
+  dimension: average_min_temparature {
+    description: "Average min temparature."
+  }
+  dimension: total_sales {
+    description: "Sum of sale price / revenue."
+  }
+  dimension: total_gross_margin {
+    description: "Total gross margin."
+  }
+  dimension: percent_customer_transactions {
+    description: "Share of transactions linked to identified customers."
+  }
+  dimension: number_of_transactions {
+    description: "Count of distinct transactions."
+  }
+  dimension: number_of_customers {
+    description: "Count of distinct customers."
+  }
 }
 
 view: stock_forecasting_category_week_facts_prior_year {
@@ -310,16 +408,36 @@ view: stock_forecasting_category_week_facts_prior_year {
       }
     }
   }
-  dimension: transaction_week_of_year {}
-  dimension: category {}
-  dimension: total_quantity {}
-  dimension: average_basket_size {}
-  dimension: average_item_price {}
-  dimension: total_sales {}
-  dimension: total_gross_margin {}
-  dimension: percent_customer_transactions {}
-  dimension: number_of_transactions {}
-  dimension: number_of_customers {}
+  dimension: transaction_week_of_year {
+    description: "Week-of-year number for the transaction week."
+  }
+  dimension: category {
+    description: "Product category."
+  }
+  dimension: total_quantity {
+    description: "Sum of units sold."
+  }
+  dimension: average_basket_size {
+    description: "Average sales value per transaction (basket size)."
+  }
+  dimension: average_item_price {
+    description: "Average item price."
+  }
+  dimension: total_sales {
+    description: "Sum of sale price / revenue."
+  }
+  dimension: total_gross_margin {
+    description: "Total gross margin."
+  }
+  dimension: percent_customer_transactions {
+    description: "Share of transactions linked to identified customers."
+  }
+  dimension: number_of_transactions {
+    description: "Count of distinct transactions."
+  }
+  dimension: number_of_customers {
+    description: "Count of distinct customers."
+  }
 }
 
 explore: stock_forecasting_product_store_week_facts {
@@ -416,6 +534,7 @@ view: stock_forecasting_prediction {
   }
 
   dimension: pk {
+    description: "Pk."
     hidden: yes
     primary_key: yes
     type: string
@@ -423,42 +542,49 @@ view: stock_forecasting_prediction {
   }
 
   dimension: transaction_week_of_year {
+    description: "Transaction week of year."
     hidden: yes
     type: number
     sql: ${TABLE}.transaction_week_of_year ;;
   }
 
   dimension: store_id {
+    description: "Unique identifier for a store location."
     hidden: yes
     type: number
     sql: ${TABLE}.store_id ;;
   }
 
   dimension: product_name {
+    description: "Product display name."
     hidden: yes
     type: string
     sql: ${TABLE}.product_name ;;
   }
 
   dimension: category {
+    description: "Product category."
     hidden: yes
     type: string
     sql: ${TABLE}.category ;;
   }
 
   dimension: predicted_total_quantity {
+    description: "Predicted total quantity."
     hidden: yes
     type: number
     sql: ${TABLE}.predicted_total_quantity ;;
   }
 
   dimension: predicted_total_quantity_rounded {
+    description: "Predicted total quantity rounded."
     hidden: yes
     type: number
     sql: ROUND(${predicted_total_quantity},0) ;;
   }
 
   measure: forecasted_quantity {
+    description: "Forecasted Stock 📈."
     view_label: "Stock Forecasting 🏭"
     label: "Forecasted Stock 📈"
     type: sum

@@ -89,16 +89,19 @@ view: customer_clustering_prediction {
   }
 
   dimension: centroid_id {
+    description: "Identifier of the k-means cluster centroid assigned to the customer."
     type: number
     hidden: yes
     sql: ${TABLE}.CENTROID_ID ;;
   }
 
   dimension: customer_id {
+    description: "Unique identifier for a customer."
     sql: ${TABLE}.customer_id ;;
   }
 
   dimension: customer_segment {
+    description: "ML-assigned customer segment from k-means clustering."
     type: string
     sql: ${TABLE}.customer_segment ;;
     order_by_field: centroid_id
@@ -111,35 +114,41 @@ view: customer_clustering_prediction {
   # Cluster Evaluation
 
   measure: customer_count {
+    description: "Count of distinct customers."
     type: count_distinct
     sql: ${TABLE}.customer_id ;;
   }
 
   measure: average_total_sales {
+    description: "Average total sales for the selected rows."
     type: average
     value_format_name: usd
     sql: ${TABLE}.total_sales ;;
   }
 
   measure: average_age {
+    description: "Average age for the selected rows."
     type: average
     value_format_name: decimal_0
     sql: ${TABLE}.age ;;
   }
 
   measure: average_total_quantity {
+    description: "Average total quantity for the selected rows."
     type: average
     value_format_name: usd
     sql: ${TABLE}.total_quantity ;;
   }
 
   measure: average_number_of_transactions {
+    description: "Average number of transactions for the selected rows."
     type: average
     value_format_name: decimal_1
     sql: ${TABLE}.number_of_transactions ;;
   }
 
   measure: average_basket_size {
+    description: "Average sales value per transaction (basket size)."
     type: average
     value_format_name: usd
     sql: ${TABLE}.average_basket_size ;;

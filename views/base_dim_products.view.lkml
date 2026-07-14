@@ -4,6 +4,7 @@ view: products {
   drill_fields: [id]
 
   dimension: id {
+    description: "Primary key for this record."
     primary_key: yes
     type: number
     hidden: yes
@@ -11,12 +12,14 @@ view: products {
   }
 
   dimension: brand {
+    description: "Product brand."
     type: string
     sql: ${TABLE}.BRAND ;;
     drill_fields: [name]
   }
 
   dimension: category {
+    description: "Product category."
     type: string
     sql: ${TABLE}.CATEGORY ;;
     drill_fields: [stores.name,brand]
@@ -44,12 +47,14 @@ view: products {
   }
 
   dimension: department {
+    description: "Product department."
     label: "Target Gender"
     type: string
     sql: ${TABLE}.DEPARTMENT ;;
   }
 
   dimension: name {
+    description: "Display name for this entity."
     label: "Product Name"
     type: string
     sql: ${TABLE}.NAME ;;
@@ -61,11 +66,13 @@ view: products {
   }
 
   dimension: sku {
+    description: "Stock keeping unit identifier."
     type: string
     sql: ${TABLE}.SKU ;;
   }
 
   dimension: area {
+    description: "High-level product area grouping."
     type: string
     sql: CASE
       WHEN ${category} IN ('Accessories', 'Swim', 'Socks', 'Socks & Hosiery', 'Leggings', 'Plus', 'Sleep & Lounge') THEN 'Accessories'
@@ -79,6 +86,7 @@ view: products {
   ##### DERIVED DIMENSIONS #####
 
   dimension: product_image {
+    description: "Product image."
     type: string
     sql: ${name} ;;
     html: <img src="https://us-central1-looker-private-demo.cloudfunctions.net/imageSearch?q={{value | encode_uri }}" style="height: 50px; max-width: 150px;" /> ;;
@@ -87,6 +95,7 @@ view: products {
   ##### MEASURES #####
 
   measure: number_of_products {
+    description: "Count metric: number of products."
     type: count_distinct
     sql: ${id} ;;
   }

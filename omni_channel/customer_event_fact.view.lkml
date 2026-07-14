@@ -14,21 +14,27 @@ view: customer_event_fact {
     }
   }
   dimension: customer_id {
+    description: "Unique identifier for a customer."
     type: number
   }
   dimension: acquisition_source {
+    description: "Marketing or traffic source attributed to customer acquisition."
     type: string
   }
   dimension: cart_adds {
+    description: "Number of add-to-cart events."
     type: number
   }
   dimension: event_count {
+    description: "Count of tracked digital events."
     type: number
   }
   dimension: purchases {
+    description: "Number of purchase events in the digital channel."
     type: number
   }
   dimension: session_count {
+    description: "Count of website or app sessions."
     type: number
   }
 }

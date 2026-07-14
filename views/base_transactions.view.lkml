@@ -6,24 +6,28 @@ view: transactions {
 
 
   dimension: transaction_id {
+    description: "Unique identifier for a transaction/receipt."
     type: number
     primary_key: yes
     sql: ${TABLE}.transaction_id ;;
   }
 
   dimension: channel_id {
+    description: "Unique identifier for the purchase channel."
     type: number
     hidden: yes
     sql: ${TABLE}.channel_id ;;
   }
 
   dimension: customer_id {
+    description: "Unique identifier for a customer."
     type: number
     hidden: yes
     sql: ${TABLE}.customer_id ;;
   }
 
   dimension: line_items {
+    description: "Nested array of line items on the transaction (unnest to analyze products)."
     hidden: yes
     sql:
     -- spectacles: ignore
@@ -31,12 +35,14 @@ view: transactions {
   }
 
   dimension: store_id {
+    description: "Unique identifier for a store location."
     type: number
     hidden: yes
     sql: ${TABLE}.store_id ;;
   }
 
   dimension_group: transaction {
+    description: "Time attributes for Transaction (available timeframes such as date, week, and month)."
     type: time
     timeframes: [
       raw,
@@ -63,6 +69,7 @@ view: transactions {
   }
 
   dimension_group: since_first_customer_transaction {
+    description: "Time attributes for Since first customer transaction (available timeframes such as date, week, and month)."
     type: duration
     intervals: [month]
     sql_start: ${customer_facts.customer_first_purchase_raw} ;;
@@ -72,6 +79,7 @@ view: transactions {
   ##### MEASURES #####
 
   measure: number_of_transactions {
+    description: "Count of distinct transactions."
     type: count_distinct
     sql: ${transactions.transaction_id} ;;
     value_format_name: decimal_0
@@ -79,6 +87,7 @@ view: transactions {
   }
 
   measure: number_of_customers {
+    description: "Count of distinct customers."
     type: count_distinct
     sql: ${transactions.customer_id} ;;
     value_format_name: decimal_0
@@ -86,6 +95,7 @@ view: transactions {
   }
 
   measure: number_of_stores {
+    description: "Count metric: number of stores."
     view_label: "Stores 🏪"
     type: count_distinct
     sql: ${transactions.store_id} ;;
@@ -94,6 +104,7 @@ view: transactions {
   }
 
   measure: number_of_customer_transactions {
+    description: "Count of transactions associated with a known customer."
     hidden: yes
     type: count_distinct
     sql: ${transaction_id} ;;
@@ -104,6 +115,7 @@ view: transactions {
   }
 
   measure: percent_customer_transactions {
+    description: "Share of transactions linked to identified customers."
     type: number
     sql: ${number_of_customer_transactions}/NULLIF(${number_of_transactions},0) ;;
     value_format_name: percent_1
@@ -111,6 +123,7 @@ view: transactions {
   }
 
   measure: first_transaction {
+    description: "First transaction for the selected rows."
     type: date
     sql: MIN(${transaction_raw}) ;;
     drill_fields: [drill_detail*]
@@ -119,6 +132,7 @@ view: transactions {
   ##### DATE COMPARISON MEASURES #####
 
   measure: number_of_transactions_change {
+    description: "Count metric: number of transactions change."
     view_label: "Date Comparison"
     label: "Number of Transactions Change (%)"
     type: number
@@ -128,6 +142,7 @@ view: transactions {
   }
 
   measure: number_of_customers_change {
+    description: "Count metric: number of customers change."
     view_label: "Date Comparison"
     label: "Number of Customers Change (%)"
     type: number
@@ -139,6 +154,7 @@ view: transactions {
   ##### PER STORE MEASURES #####
 
   measure: number_of_transactions_per_store {
+    description: "Count metric: number of transactions per store."
     view_label: "Stores 🏪"
     type: number
     sql: ${number_of_transactions}/NULLIF(${number_of_stores},0) ;;

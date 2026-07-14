@@ -37,6 +37,7 @@ view: order_items_base {
 
   #### TO DO: Edit the values of this parameter according to the hierarchy levels used in the base table above
   parameter: product_level {
+    description: "Product hierarchy level for affinity analysis (product, brand, or category)."
     view_label: "Item Affinity"
     type: unquoted
     allowed_value: {
@@ -163,6 +164,7 @@ view: total_orders {
   }
 
   dimension: count {
+    description: "Count of matching records."
     type: number
     sql: ${TABLE}.count ;;
     view_label: "Item Affinity"
@@ -215,12 +217,14 @@ view: order_purchase_affinity {
   ##### Filters #####
 
   filter: affinity_timeframe {
+    description: "Date range used to compute item affinity metrics."
     type: date
   }
 
   #### TO DO: [optional] add any store or other level filters here, or remove this one
 
   filter: store_name {
+    description: "Name of the store location."
     type: string
     suggest_explore: transactions
     suggest_dimension: stores.name
@@ -229,6 +233,7 @@ view: order_purchase_affinity {
   ##### Dimensions #####
 
   dimension: product_a {
+    description: "Focus product (product A) in the affinity pair."
     group_label: "Product A"
     type: string
     sql: ${TABLE}.product_a ;;
@@ -240,6 +245,7 @@ view: order_purchase_affinity {
   }
 
   dimension: product_a_image {
+    description: "Image for focus product A."
     group_label: "Product A"
     type: string
     sql: ${product_a} ;;
@@ -247,12 +253,14 @@ view: order_purchase_affinity {
   }
 
   dimension: product_b {
+    description: "Paired product (product B) bought with product A."
     group_label: "Product B"
     type: string
     sql: ${TABLE}.product_b ;;
   }
 
   dimension: product_b_image {
+    description: "Image for paired product B."
     group_label: "Product B"
     type: string
     sql: ${product_b} ;;
@@ -260,12 +268,14 @@ view: order_purchase_affinity {
   }
 
   dimension: product_a_category {
+    description: "Product a category."
     group_label: "Product A"
     type: string
     sql: ${TABLE}.product_a_category ;;
   }
 
   dimension: product_b_category {
+    description: "Product b category."
     group_label: "Product B"
     type: string
     sql: ${TABLE}.product_b_category ;;
@@ -336,6 +346,7 @@ view: order_purchase_affinity {
   }
 
   dimension: product_a_count_purchased_alone {
+    description: "Product a count purchased alone."
     type: number
     hidden: yes
     sql: ${TABLE}.product_a_count_purchased_alone ;;
@@ -350,6 +361,7 @@ view: order_purchase_affinity {
   }
 
   dimension: product_a_count_orders_by_exclusive_customers {
+    description: "Product a count orders by exclusive customers."
     group_label: "Product A"
     type: number
     hidden: yes
@@ -365,6 +377,7 @@ view: order_purchase_affinity {
   }
 
   dimension: product_a_count_purchased_by_loyalty_customer {
+    description: "Product a count purchased by loyalty customer."
     type: number
     hidden: yes
     sql: ${TABLE}.product_a_count_purchased_by_loyalty_customer ;;
@@ -379,6 +392,7 @@ view: order_purchase_affinity {
   }
 
   dimension: product_b_count_purchased_alone {
+    description: "Product b count purchased alone."
     type: number
     hidden: yes
     sql: ${TABLE}.product_b_count_purchased_alone ;;
@@ -393,6 +407,7 @@ view: order_purchase_affinity {
   }
 
   dimension: product_b_count_orders_by_exclusive_customers {
+    description: "Product b count orders by exclusive customers."
     type: number
     hidden: yes
     sql: ${TABLE}.product_b_count_orders_by_exclusive_customers ;;
@@ -407,6 +422,7 @@ view: order_purchase_affinity {
   }
 
   dimension: product_b_count_purchased_by_loyalty_customer {
+    description: "Product b count purchased by loyalty customer."
     type: number
     hidden: yes
     sql: ${TABLE}.product_b_count_purchased_by_loyalty_customer ;;
@@ -431,6 +447,7 @@ view: order_purchase_affinity {
   # Sales Metrics - Totals
 
   dimension: product_a_total_sales {
+    description: "Product a total sales."
     view_label: "Sales and Margin - Total"
     group_label: "Product A - Sales"
     type: number
@@ -439,6 +456,7 @@ view: order_purchase_affinity {
   }
 
   dimension: product_a_total_basket_sales {
+    description: "Product a total basket sales."
     view_label: "Sales and Margin - Total"
     group_label: "Product A - Sales"
     type: number
@@ -447,6 +465,7 @@ view: order_purchase_affinity {
   }
 
   dimension: product_a_total_rest_of_basket_sales {
+    description: "Product a total rest of basket sales."
     view_label: "Sales and Margin - Total"
     group_label: "Product A - Sales"
     type: number
@@ -455,6 +474,7 @@ view: order_purchase_affinity {
   }
 
   dimension: product_b_total_sales {
+    description: "Product b total sales."
     view_label: "Sales and Margin - Total"
     group_label: "Product B - Sales"
     type: number
@@ -463,6 +483,7 @@ view: order_purchase_affinity {
   }
 
   dimension: product_b_total_basket_sales {
+    description: "Product b total basket sales."
     view_label: "Sales and Margin - Total"
     group_label: "Product B - Sales"
     type: number
@@ -471,6 +492,7 @@ view: order_purchase_affinity {
   }
 
   dimension: product_b_total_rest_of_basket_sales {
+    description: "Product b total rest of basket sales."
     view_label: "Sales and Margin - Total"
     group_label: "Product B - Sales"
     type: number
@@ -481,6 +503,7 @@ view: order_purchase_affinity {
   # Margin Metrics - Totals
 
   dimension: product_a_total_margin {
+    description: "Product a total margin."
     view_label: "Sales and Margin - Total"
     group_label: "Product A - Margin"
     type: number
@@ -489,6 +512,7 @@ view: order_purchase_affinity {
   }
 
   dimension: product_a_total_basket_margin {
+    description: "Product a total basket margin."
     view_label: "Sales and Margin - Total"
     group_label: "Product A - Margin"
     type: number
@@ -497,6 +521,7 @@ view: order_purchase_affinity {
   }
 
   dimension: product_a_total_rest_of_basket_margin {
+    description: "Product a total rest of basket margin."
     view_label: "Sales and Margin - Total"
     group_label: "Product A - Margin"
     type: number
@@ -505,6 +530,7 @@ view: order_purchase_affinity {
   }
 
   dimension: product_b_total_margin {
+    description: "Product b total margin."
     view_label: "Sales and Margin - Total"
     group_label: "Product B - Margin"
     type: number
@@ -513,6 +539,7 @@ view: order_purchase_affinity {
   }
 
   dimension: product_b_total_basket_margin {
+    description: "Product b total basket margin."
     view_label: "Sales and Margin - Total"
     group_label: "Product B - Margin"
     type: number
@@ -521,6 +548,7 @@ view: order_purchase_affinity {
   }
 
   dimension: product_b_total_rest_of_basket_margin {
+    description: "Product b total rest of basket margin."
     view_label: "Sales and Margin - Total"
     group_label: "Product B - Margin"
     type: number
@@ -531,6 +559,7 @@ view: order_purchase_affinity {
   # Sales Metrics - Average
 
   dimension: product_a_average_sales {
+    description: "Product a average sales."
     view_label: "Sales and Margin - Average"
     group_label: "Product A - Sales"
     type: number
@@ -539,6 +568,7 @@ view: order_purchase_affinity {
   }
 
   dimension: product_a_average_basket_sales {
+    description: "Product a average basket sales."
     view_label: "Sales and Margin - Average"
     group_label: "Product A - Sales"
     type: number
@@ -547,6 +577,7 @@ view: order_purchase_affinity {
   }
 
   dimension: product_a_average_rest_of_basket_sales {
+    description: "Product a average rest of basket sales."
     view_label: "Sales and Margin - Average"
     group_label: "Product A - Sales"
     type: number
@@ -555,6 +586,7 @@ view: order_purchase_affinity {
   }
 
   dimension: product_b_average_sales {
+    description: "Product b average sales."
     view_label: "Sales and Margin - Average"
     group_label: "Product B - Sales"
     type: number
@@ -563,6 +595,7 @@ view: order_purchase_affinity {
   }
 
   dimension: product_b_average_basket_sales {
+    description: "Product b average basket sales."
     view_label: "Sales and Margin - Average"
     group_label: "Product B - Sales"
     type: number
@@ -571,6 +604,7 @@ view: order_purchase_affinity {
   }
 
   dimension: product_b_average_rest_of_basket_sales {
+    description: "Product b average rest of basket sales."
     view_label: "Sales and Margin - Average"
     group_label: "Product B - Sales"
     type: number
@@ -581,6 +615,7 @@ view: order_purchase_affinity {
   # Margin Metrics - Average
 
   dimension: product_a_average_margin {
+    description: "Product a average margin."
     view_label: "Sales and Margin - Average"
     group_label: "Product A - Margin"
     type: number
@@ -589,6 +624,7 @@ view: order_purchase_affinity {
   }
 
   dimension: product_a_average_basket_margin {
+    description: "Product a average basket margin."
     view_label: "Sales and Margin - Average"
     group_label: "Product A - Margin"
     type: number
@@ -598,6 +634,7 @@ view: order_purchase_affinity {
   }
 
   dimension: product_a_average_rest_of_basket_margin {
+    description: "Product a average rest of basket margin."
     view_label: "Sales and Margin - Average"
     group_label: "Product A - Margin"
     type: number
@@ -607,6 +644,7 @@ view: order_purchase_affinity {
   }
 
   dimension: product_b_average_margin {
+    description: "Product b average margin."
     view_label: "Sales and Margin - Average"
     group_label: "Product B - Margin"
     type: number
@@ -615,6 +653,7 @@ view: order_purchase_affinity {
   }
 
   dimension: product_b_average_basket_margin {
+    description: "Product b average basket margin."
     view_label: "Sales and Margin - Average"
     group_label: "Product B - Margin"
     type: number
@@ -624,6 +663,7 @@ view: order_purchase_affinity {
   }
 
   dimension: product_b_average_rest_of_basket_margin {
+    description: "Product b average rest of basket margin."
     view_label: "Sales and Margin - Average"
     group_label: "Product B - Margin"
     type: number

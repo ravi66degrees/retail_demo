@@ -29,11 +29,13 @@ view: c360 {
     }
   }
   dimension: acquisition_source {
+    description: "Marketing or traffic source attributed to customer acquisition."
     drill_fields: [omni_channel_transactions.offer_type]
     type: string
     sql: COALESCE(${TABLE}.acquisition_source,'Unknown') ;;
   }
   dimension: customer_type {
+    description: "Whether the customer shops online only, in-store only, or both."
     drill_fields: [acquisition_source,has_visited_website]
     case: {
       when: {
@@ -53,112 +55,141 @@ view: c360 {
   }
 
   dimension: cart_adds {
+    description: "Number of add-to-cart events."
     type: number
   }
   dimension: event_count {
+    description: "Count of tracked digital events."
     type: number
   }
   dimension: purchases {
+    description: "Number of purchase events in the digital channel."
     type: number
   }
   dimension: session_count {
+    description: "Count of website or app sessions."
     type: number
   }
   dimension: has_visited_website {
+    description: "Whether the customer has any digital/website events."
     type: yesno
     sql: ${event_count} > 0 ;;
   }
   dimension: count {
+    description: "Count of matching records."
     label: "Support Calls"
     type: number
   }
   dimension: curbside_transaction_count {
+    description: "Count of curbside transactions for the customer."
     type: number
   }
   dimension: customer_id {
+    description: "Unique identifier for a customer."
     value_format_name: id
     primary_key: yes
     type: number
   }
   dimension: discounted_transaction_count {
+    description: "Count of transactions that included a discount or offer."
     type: number
   }
   dimension_group: first_purchase {
+    description: "Date of the customer's first purchase."
     type: time
     timeframes: [raw,date]
     sql: CAST(${TABLE}.first_purchase as timestamp) ;;
   }
   dimension: instore_transaction_count {
+    description: "Count of in-store transactions for the customer."
     type: number
   }
   dimension: item_count {
+    description: "Number of items purchased."
     type: number
   }
   dimension: l180_transaction_count {
+    description: "Transactions in the last 180 days."
     type: number
   }
   dimension: l30_transaction_count {
+    description: "Transactions in the last 30 days."
     type: number
   }
   dimension: l360_transaction_count {
+    description: "Transactions in the last 360 days."
     type: number
   }
   dimension: l90_transaction_count {
+    description: "Transactions in the last 90 days."
     type: number
   }
   dimension_group: last_purchase {
+    description: "Date of the customer's most recent purchase."
     type: time
     timeframes: [raw,date]
     sql: CAST(${TABLE}.last_purchase as timestamp) ;;
   }
   dimension: days_a_customer {
+    description: "Days a customer."
     type: number
     sql: IF(DATE_DIFF(CURRENT_DATE(), ${first_purchase_date}, DAY) > 30,DATE_DIFF(CURRENT_DATE(), ${first_purchase_date}, DAY),30) ;;
   }
   dimension: days_since_last_purchase {
+    description: "Days since last purchase."
     type: number
     sql: DATE_DIFF(CURRENT_DATE(), ${last_purchase_date}, DAY) ;;
   }
   dimension: average_days_between_transaction {
+    description: "Average days between transaction."
     type: number
     sql: ${days_a_customer} / nullif(${purchases},0) ;;
   }
   dimension: risk_of_churn {
+    description: "Relative likelihood that the customer will churn."
     type: number
     value_format_name: percent_1
     sql: IF(1 - (${average_days_between_transaction} / nullif(${days_since_last_purchase},0))<0,0,1 - (${average_days_between_transaction} / nullif(${days_since_last_purchase},0))) ;;
   }
   dimension: risk_of_churn_100 {
+    description: "Risk of churn 100."
     type: number
     sql: ${risk_of_churn} * 100 ;;
   }
   dimension: online_transaction_count {
+    description: "Count of online transactions for the customer."
     type: number
   }
   dimension: return_count {
+    description: "Number of returned transactions or items."
     type: number
   }
   dimension: total_sales {
+    description: "Sum of sale price / revenue."
     value_format_name: usd
     type: number
   }
   dimension: transaction_count {
+    description: "Number of transactions for this customer or period."
     type: number
   }
 
 #use customer transaction date
 
   dimension: months_since_first_purchase {
+    description: "Months since first purchase."
     type: number
     sql: DATE_DIFF(${omni_channel_transactions.transaction_date}, ${first_purchase_date}, MONTH) ;;
   }
 
   dimension: transactions_per_month {
+    description: "Transactions per month."
     type: number
     sql: ${transaction_count}/nullif(${months_since_first_purchase},0) ;;
   }
 
   dimension: recency_rating {
+    description: "Recency rating."
     hidden: yes
     type: number
     sql: CASE WHEN ${l30_transaction_count} >= 1 THEN 5
@@ -172,6 +203,7 @@ view: c360 {
 
 # number of transactions/orders per month
   dimension: frequency_rating {
+    description: "Frequency rating."
     hidden: yes
     type: number
     sql: CASE WHEN ${transactions_per_month} >= 2 THEN 5
@@ -183,6 +215,7 @@ view: c360 {
   }
 
   dimension: value_rating {
+    description: "Value rating."
     hidden: yes
     type: number
     sql: CASE WHEN ${total_sales} >= 1000 THEN 5
@@ -195,6 +228,7 @@ view: c360 {
   }
 
   dimension: rfm_rating {
+    description: "Rfm rating."
     type: string
     sql: CASE WHEN ${recency_rating} = 5 AND (${frequency_rating} = 5 OR ${frequency_rating} = 4) THEN 'Champion'
               WHEN (${recency_rating} = 5 OR ${recency_rating} = 4) AND (${frequency_rating} = 3 OR ${frequency_rating} = 2) THEN 'Potential Loyalist'
@@ -211,6 +245,7 @@ view: c360 {
   }
 
   measure: customer_count {
+    description: "Count of distinct customers."
     value_format:"[>=1000000]0.0,,\"M\";[>=1000]0.0,\"K\";0"
     drill_fields: [customer_id,customers.name,customers.email,customers.address,retail_clv_predict.predicted_clv,risk_of_churn,omni_channel_transactions__transaction_details.recommended_products]
     link: {
@@ -221,47 +256,55 @@ view: c360 {
   }
 
   measure: high_recency_customers {
+    description: "High recency customers for the selected rows."
     group_label: "RFV Analysis"
     type: count
     filters: [recency_rating: "5"]
   }
 
   measure: low_recency_customers {
+    description: "Low recency customers for the selected rows."
     group_label: "RFV Analysis"
     type: count
     filters: [recency_rating: "1"]
   }
 
   measure: high_frequency_customers {
+    description: "High frequency customers for the selected rows."
     group_label: "RFV Analysis"
     type: count
     filters: [frequency_rating: "5"]
   }
 
   measure: low_frequency_customers {
+    description: "Low frequency customers for the selected rows."
     group_label: "RFV Analysis"
     type: count
     filters: [frequency_rating: "1"]
   }
 
   measure: average_sales_amount {
+    description: "Average sales amount for the selected rows."
     value_format:"[>=1000000]$0.0,,\"M\";[>=1000]$0.0,\"K\";$0.0"
     type: average
     sql: ${total_sales} ;;
   }
 
   measure: average_transaction_count {
+    description: "Average transaction count for the selected rows."
     type: average
     sql: ${transaction_count} ;;
   }
 
   measure: high_monetary_value_customers {
+    description: "High monetary value customers for the selected rows."
     group_label: "RFV Analysis"
     type: count
     filters: [value_rating: "5"]
   }
 
   measure: low_monetary_value_customers {
+    description: "Low monetary value customers for the selected rows."
     group_label: "RFV Analysis"
     type: count
     filters: [value_rating: "1"]

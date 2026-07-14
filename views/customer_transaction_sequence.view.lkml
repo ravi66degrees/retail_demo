@@ -28,12 +28,14 @@ view: customer_transaction_sequence {
   }
 
   dimension: customer_id {
+    description: "Unique identifier for a customer."
     hidden: yes
     type: number
     sql: ${TABLE}.customer_id ;;
   }
 
   dimension_group: transaction {
+    description: "Time attributes for Transaction (available timeframes such as date, week, and month)."
     hidden: yes
     type: time
     timeframes: [raw,date]
@@ -41,61 +43,73 @@ view: customer_transaction_sequence {
   }
 
   dimension: category_list {
+    description: "Category list."
     type: string
     sql: ${TABLE}.category_list ;;
   }
 
   dimension: transaction_sequence {
+    description: "Transaction sequence."
     type: number
     sql: ${TABLE}.transaction_sequence ;;
   }
 
   dimension: product_category_list_transaction_1 {
+    description: "Product category list transaction 1."
     type: string
     sql: ${TABLE}.category_list_transaction_1 ;;
   }
 
   dimension: product_category_list_transaction_2 {
+    description: "Product category list transaction 2."
     type: string
     sql: ${TABLE}.category_list_transaction_2 ;;
   }
 
   dimension: product_category_list_transaction_3 {
+    description: "Product category list transaction 3."
     type: string
     sql: ${TABLE}.category_list_transaction_3 ;;
   }
 
   dimension: product_category_list_transaction_4 {
+    description: "Product category list transaction 4."
     type: string
     sql: ${TABLE}.category_list_transaction_4 ;;
   }
 
   dimension: product_category_list_transaction_5 {
+    description: "Product category list transaction 5."
     type: string
     sql: ${TABLE}.category_list_transaction_5 ;;
   }
 
   dimension: main_product_category_transaction_1 {
+    description: "Main product category transaction 1."
     type: string
     sql: ${TABLE}.main_category_transaction_1 ;;
   }
 
   dimension: main_product_category_transaction_2 {
+    description: "Main product category transaction 2."
     type: string
     sql: ${TABLE}.main_category_transaction_2 ;;
   }
 
   dimension: main_product_category_transaction_3 {
+    description: "Main product category transaction 3."
     type: string
     sql: ${TABLE}.main_category_transaction_3 ;;
   }
 
   dimension: main_product_category_transaction_4 {
+    description: "Main product category transaction 4."
     type: string
     sql: ${TABLE}.main_category_transaction_4 ;;
   }
 
   dimension: main_product_category_transaction_5 {
+    description: "Main product category transaction 5."
     type: string
     sql: ${TABLE}.main_category_transaction_5 ;;
   }

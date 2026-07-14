@@ -233,6 +233,7 @@ view: omni_channel_transactions {
   }
 
   dimension: reporting_period {
+    description: "Reporting period."
     type: string
     sql: CASE
         WHEN EXTRACT(YEAR from ${transaction_raw}) = EXTRACT(YEAR from CURRENT_TIMESTAMP())
@@ -248,106 +249,127 @@ view: omni_channel_transactions {
   }
 
   measure: customer_count {
+    description: "Count of distinct customers."
     type: count_distinct
     sql: ${customer_id} ;;
   }
 
   measure: first_purchase {
+    description: "Date of the customer's first purchase."
     type: string
     sql: min(${transaction_date}) ;;
   }
 
   measure: last_purchase {
+    description: "Date of the customer's most recent purchase."
     type: string
     sql: max(${transaction_date}) ;;
   }
 
   measure: transaction_count {
+    description: "Number of transactions for this customer or period."
     type: count
   }
 
   measure: l30_transaction_count {
+    description: "Transactions in the last 30 days."
     type: count
     filters: [last_30: "Yes"]
   }
 
   measure: l90_transaction_count {
+    description: "Transactions in the last 90 days."
     type: count
     filters: [last_90: "Yes"]
   }
 
   measure: l180_transaction_count {
+    description: "Transactions in the last 180 days."
     type: count
     filters: [last_180: "Yes"]
   }
 
   measure: l360_transaction_count {
+    description: "Transactions in the last 360 days."
     type: count
     filters: [last_360: "Yes"]
   }
 
   measure: return_count {
+    description: "Number of returned transactions or items."
     type: count
     filters: [is_returned: "Yes"]
   }
 
   measure: discounted_transaction_count {
+    description: "Count of transactions that included a discount or offer."
     type: count
     filters: [is_discounted: "Yes"]
   }
 
   measure: online_transaction_count {
+    description: "Count of online transactions for the customer."
     filters: [purchase_channel: "Online"]
     type: count
   }
 
   measure: curbside_transaction_count {
+    description: "Count of curbside transactions for the customer."
     type: count
     filters: [fulfillment_channel: "In-store Pickup"]
   }
 
   measure: instore_transaction_count {
+    description: "Count of in-store transactions for the customer."
     filters: [purchase_channel: "In-store"]
     type: count
   }
 
   dimension: is_discounted {
+    description: "Yes/no flag indicating is discounted."
     type: yesno
     sql: ${offer_type} is not null ;;
   }
 
   dimension: is_returned {
+    description: "Yes/no flag indicating is returned."
     type: yesno
     sql: ${returned_raw} is not null ;;
   }
 
   dimension: last_30 {
+    description: "Last 30."
     type: yesno
     sql: ${transaction_raw} >= ((TIMESTAMP(FORMAT_TIMESTAMP('%F %H:%M:%E*S', TIMESTAMP_ADD(TIMESTAMP_TRUNC(TIMESTAMP(FORMAT_TIMESTAMP('%F %H:%M:%E*S', CURRENT_TIMESTAMP(), 'America/Los_Angeles')), DAY), INTERVAL -29 DAY)), 'America/Los_Angeles'))) AND ${transaction_raw} < ((TIMESTAMP(FORMAT_TIMESTAMP('%F %H:%M:%E*S', TIMESTAMP_ADD(TIMESTAMP_ADD(TIMESTAMP_TRUNC(TIMESTAMP(FORMAT_TIMESTAMP('%F %H:%M:%E*S', CURRENT_TIMESTAMP(), 'America/Los_Angeles')), DAY), INTERVAL -29 DAY), INTERVAL 30 DAY)), 'America/Los_Angeles'))) ;;
   }
 
   dimension: last_90 {
+    description: "Last 90."
     type: yesno
     sql: ${transaction_raw} >= ((TIMESTAMP(FORMAT_TIMESTAMP('%F %H:%M:%E*S', TIMESTAMP_ADD(TIMESTAMP_TRUNC(TIMESTAMP(FORMAT_TIMESTAMP('%F %H:%M:%E*S', CURRENT_TIMESTAMP(), 'America/Los_Angeles')), DAY), INTERVAL -89 DAY)), 'America/Los_Angeles'))) AND ${transaction_raw} < ((TIMESTAMP(FORMAT_TIMESTAMP('%F %H:%M:%E*S', TIMESTAMP_ADD(TIMESTAMP_ADD(TIMESTAMP_TRUNC(TIMESTAMP(FORMAT_TIMESTAMP('%F %H:%M:%E*S', CURRENT_TIMESTAMP(), 'America/Los_Angeles')), DAY), INTERVAL -89 DAY), INTERVAL 90 DAY)), 'America/Los_Angeles'))) ;;
   }
 
   dimension: last_180 {
+    description: "Last 180."
     type: yesno
     sql: ${transaction_raw} >= ((TIMESTAMP(FORMAT_TIMESTAMP('%F %H:%M:%E*S', TIMESTAMP_ADD(TIMESTAMP_TRUNC(TIMESTAMP(FORMAT_TIMESTAMP('%F %H:%M:%E*S', CURRENT_TIMESTAMP(), 'America/Los_Angeles')), DAY), INTERVAL -179 DAY)), 'America/Los_Angeles'))) AND ${transaction_raw} < ((TIMESTAMP(FORMAT_TIMESTAMP('%F %H:%M:%E*S', TIMESTAMP_ADD(TIMESTAMP_ADD(TIMESTAMP_TRUNC(TIMESTAMP(FORMAT_TIMESTAMP('%F %H:%M:%E*S', CURRENT_TIMESTAMP(), 'America/Los_Angeles')), DAY), INTERVAL -179 DAY), INTERVAL 180 DAY)), 'America/Los_Angeles'))) ;;
   }
 
   dimension: last_360 {
+    description: "Last 360."
     type: yesno
     sql: ${transaction_raw} >= ((TIMESTAMP(FORMAT_TIMESTAMP('%F %H:%M:%E*S', TIMESTAMP_ADD(TIMESTAMP_TRUNC(TIMESTAMP(FORMAT_TIMESTAMP('%F %H:%M:%E*S', CURRENT_TIMESTAMP(), 'America/Los_Angeles')), DAY), INTERVAL -359 DAY)), 'America/Los_Angeles'))) AND ${transaction_raw} < ((TIMESTAMP(FORMAT_TIMESTAMP('%F %H:%M:%E*S', TIMESTAMP_ADD(TIMESTAMP_ADD(TIMESTAMP_TRUNC(TIMESTAMP(FORMAT_TIMESTAMP('%F %H:%M:%E*S', CURRENT_TIMESTAMP(), 'America/Los_Angeles')), DAY), INTERVAL -359 DAY), INTERVAL 360 DAY)), 'America/Los_Angeles'))) ;;
   }
 
   dimension: customer_id {
+    description: "Unique identifier for a customer."
     value_format_name: id
     type: number
     sql: ${TABLE}.customer_id ;;
   }
 
   dimension_group: delivered {
+    description: "Time attributes for Delivered (available timeframes such as date, week, and month)."
     type: time
     timeframes: [
       raw,
@@ -363,21 +385,25 @@ view: omni_channel_transactions {
   }
 
   dimension: fulfillment_channel {
+    description: "How the order was fulfilled (e.g. self checkout, delivery, pickup)."
     type: string
     sql: ${TABLE}.fulfillment_channel ;;
   }
 
   dimension: offer_type {
+    description: "Promotion or offer applied to the transaction, if any."
     type: string
     sql: COALESCE(${TABLE}.offer_type,'None') ;;
   }
 
   dimension: purchase_channel {
+    description: "Whether the purchase was in-store or online."
     type: string
     sql: ${TABLE}.purchase_channel ;;
   }
 
   dimension_group: returned {
+    description: "Time attributes for Returned (available timeframes such as date, week, and month)."
     type: time
     timeframes: [
       raw,
@@ -392,6 +418,7 @@ view: omni_channel_transactions {
   }
 
   dimension_group: shipped {
+    description: "Time attributes for Shipped (available timeframes such as date, week, and month)."
     type: time
     timeframes: [
       raw,
@@ -407,31 +434,37 @@ view: omni_channel_transactions {
   }
 
   dimension: store_latitude {
+    description: "Store latitude."
     type: number
     sql: ${TABLE}.store_latitude ;;
   }
 
   dimension: store_longitude {
+    description: "Store longitude."
     type: number
     sql: ${TABLE}.store_longitude ;;
   }
 
   dimension: store_name {
+    description: "Name of the store location."
     type: string
     sql: ${TABLE}.store_name ;;
   }
 
   dimension: store_sq_ft {
+    description: "Store selling area in square feet."
     type: number
     sql: ${TABLE}.Store_sq_ft ;;
   }
 
   dimension: store_state {
+    description: "Store state."
     type: string
     sql: ${TABLE}.store_state ;;
   }
 
   dimension_group: transaction {
+    description: "Time attributes for Transaction (available timeframes such as date, week, and month)."
     type: time
     timeframes: [
       raw,
@@ -447,11 +480,13 @@ view: omni_channel_transactions {
   }
 
   dimension: transaction_details {
+    description: "Nested array of product-level details on the transaction."
     hidden: yes
     sql: ${TABLE}.transaction_details ;;
   }
 
   dimension: transaction_id {
+    description: "Unique identifier for a transaction/receipt."
     primary_key: yes
     type: number
     sql: ${TABLE}.transaction_id ;;
@@ -460,21 +495,25 @@ view: omni_channel_transactions {
 
 view: omni_channel_transactions__transaction_details {
   dimension: gross_margin {
+    description: "Gross margin amount in currency."
     type: number
     sql: ${TABLE}.gross_margin ;;
   }
 
   dimension: product_area {
+    description: "Product area grouping for the line item."
     type: string
     sql: ${TABLE}.product_area ;;
   }
 
   dimension: product_brand {
+    description: "Brand of the product on the line item."
     type: string
     sql: ${TABLE}.product_brand ;;
   }
 
   dimension: product_category {
+    description: "Category of the product on the line item."
     bypass_suggest_restrictions: yes
     suggestable: yes
     full_suggestions: yes
@@ -483,51 +522,60 @@ view: omni_channel_transactions__transaction_details {
   }
 
   dimension: product_department {
+    description: "Department of the product on the line item."
     type: string
     sql: ${TABLE}.product_department ;;
   }
 
   dimension: product_name {
+    description: "Product display name."
     type: string
     sql: ${TABLE}.product_name ;;
   }
 
   dimension: product_sku {
+    description: "Stock keeping unit identifier for the product."
     primary_key: yes
     type: string
     sql: ${TABLE}.product_sku ;;
   }
 
   dimension: sale_price {
+    description: "Sale price / revenue amount."
     value_format:"[>=1000000]$0.0,,\"M\";[>=1000]$0.0,\"K\";$0.0"
     type: number
     sql: ${TABLE}.sale_price ;;
   }
 
   measure: total_profit {
+    description: "Sum of profit dollars."
     value_format:"[>=1000000]$0.0,,\"M\";[>=1000]$0.0,\"K\";$0.0"
     type: sum
     sql: ${gross_margin} ;;
   }
 
   measure: total_sales {
+    description: "Sum of sale price / revenue."
     value_format:"[>=1000000]$0.0,,\"M\";[>=1000]$0.0,\"K\";$0.0"
     type: sum
     sql: ${sale_price} ;;
   }
 
   measure: profit_margin {
+    description: "Profit margin as a percentage or ratio."
     type: number
     sql: ${total_profit} / nullif(${total_sales},0) ;;
     value_format_name: percent_2
   }
 
   measure: recommended_products {
+    description: "Recommended products for the selected rows."
     type: list
     list_field: product_name
   }
 
   measure: item_count {
+    description: "Number of items purchased."
     type: count
   }
 }

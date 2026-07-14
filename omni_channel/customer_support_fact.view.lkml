@@ -10,9 +10,11 @@ view: customer_support_fact {
     }
   }
   dimension: client_id {
+    description: "Customer/client identifier associated with the support call."
     type: number
   }
   dimension: count {
+    description: "Count of matching records."
     type: number
   }
 }

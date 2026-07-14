@@ -200,30 +200,35 @@ view: store_weather {
   }
 
   dimension: awdr {
+    description: "Awdr."
     hidden: yes
     type: number
     sql: ${TABLE}.AWDR ;;
   }
 
   dimension: awnd {
+    description: "Awnd."
     hidden: yes
     type: number
     sql: ${TABLE}.AWND ;;
   }
 
   dimension: dapr {
+    description: "Dapr."
     hidden: yes
     type: number
     sql: ${TABLE}.DAPR ;;
   }
 
   dimension: dasf {
+    description: "Dasf."
     hidden: yes
     type: number
     sql: ${TABLE}.DASF ;;
   }
 
   dimension_group: weather {
+    description: "Time attributes for Weather (available timeframes such as date, week, and month)."
     hidden: yes
     type: time
     timeframes: [
@@ -240,84 +245,98 @@ view: store_weather {
   }
 
   dimension: datn {
+    description: "Datn."
     hidden: yes
     type: number
     sql: ${TABLE}.DATN ;;
   }
 
   dimension: datx {
+    description: "Datx."
     hidden: yes
     type: number
     sql: ${TABLE}.DATX ;;
   }
 
   dimension: average_distance_to_weather_stations_km {
+    description: "Average distance to weather stations km."
     hidden: yes
     type: number
     sql: ${TABLE}.average_distance_to_weather_stations_km ;;
   }
 
   dimension: dwpr {
+    description: "Dwpr."
     hidden: yes
     type: number
     sql: ${TABLE}.DWPR ;;
   }
 
   dimension: evap {
+    description: "Evap."
     hidden: yes
     type: number
     sql: ${TABLE}.EVAP ;;
   }
 
   dimension: mdpr {
+    description: "Mdpr."
     hidden: yes
     type: number
     sql: ${TABLE}.MDPR ;;
   }
 
   dimension: mdsf {
+    description: "Mdsf."
     hidden: yes
     type: number
     sql: ${TABLE}.MDSF ;;
   }
 
   dimension: mdtn {
+    description: "Mdtn."
     hidden: yes
     type: number
     sql: ${TABLE}.MDTN ;;
   }
 
   dimension: mdtx {
+    description: "Mdtx."
     hidden: yes
     type: number
     sql: ${TABLE}.MDTX ;;
   }
 
   dimension: mnpn {
+    description: "Mnpn."
     hidden: yes
     type: number
     sql: ${TABLE}.MNPN ;;
   }
 
   dimension: mxpn {
+    description: "Mxpn."
     hidden: yes
     type: number
     sql: ${TABLE}.MXPN ;;
   }
 
   dimension: pgtm {
+    description: "Pgtm."
     hidden: yes
     type: number
     sql: ${TABLE}.PGTM ;;
   }
 
   dimension: prcp {
+    description: "Precipitation (mm)."
     label: "Precipitation (mm)"
     type: number
     sql: ${TABLE}.PRCP/10.0 ;;
   }
 
   dimension: psun {
+    description: "Psun."
     hidden: yes # not populated
     label: "Percent of Day Sunny (%)"
     value_format_name: percent_1
@@ -326,342 +345,399 @@ view: store_weather {
   }
 
   dimension: sn31 {
+    description: "Sn31."
     hidden: yes
     type: number
     sql: ${TABLE}.SN31 ;;
   }
 
   dimension: sn32 {
+    description: "Sn32."
     hidden: yes
     type: number
     sql: ${TABLE}.SN32 ;;
   }
 
   dimension: sn33 {
+    description: "Sn33."
     hidden: yes
     type: number
     sql: ${TABLE}.SN33 ;;
   }
 
   dimension: sn35 {
+    description: "Sn35."
     hidden: yes
     type: number
     sql: ${TABLE}.SN35 ;;
   }
 
   dimension: sn36 {
+    description: "Sn36."
     hidden: yes
     type: number
     sql: ${TABLE}.SN36 ;;
   }
 
   dimension: sn51 {
+    description: "Sn51."
     hidden: yes
     type: number
     sql: ${TABLE}.SN51 ;;
   }
 
   dimension: sn52 {
+    description: "Sn52."
     hidden: yes
     type: number
     sql: ${TABLE}.SN52 ;;
   }
 
   dimension: sn53 {
+    description: "Sn53."
     hidden: yes
     type: number
     sql: ${TABLE}.SN53 ;;
   }
 
   dimension: sn55 {
+    description: "Sn55."
     hidden: yes
     type: number
     sql: ${TABLE}.SN55 ;;
   }
 
   dimension: sn56 {
+    description: "Sn56."
     hidden: yes
     type: number
     sql: ${TABLE}.SN56 ;;
   }
 
   dimension: sn57 {
+    description: "Sn57."
     hidden: yes
     type: number
     sql: ${TABLE}.SN57 ;;
   }
 
   dimension: snow {
+    description: "Snowfall (mm)."
     label: "Snowfall (mm)"
     type: number
     sql: ${TABLE}.SNOW ;;
   }
 
   dimension: snwd {
+    description: "Snow Depth (mm)."
     label: "Snow Depth (mm)"
     type: number
     sql: ${TABLE}.SNWD ;;
   }
 
   dimension: store_id {
+    description: "Unique identifier for a store location."
     hidden: yes
     type: number
     sql: ${TABLE}.store_id ;;
   }
 
   dimension: sx31 {
+    description: "Sx31."
     hidden: yes
     type: number
     sql: ${TABLE}.SX31 ;;
   }
 
   dimension: sx32 {
+    description: "Sx32."
     hidden: yes
     type: number
     sql: ${TABLE}.SX32 ;;
   }
 
   dimension: sx33 {
+    description: "Sx33."
     hidden: yes
     type: number
     sql: ${TABLE}.SX33 ;;
   }
 
   dimension: sx35 {
+    description: "Sx35."
     hidden: yes
     type: number
     sql: ${TABLE}.SX35 ;;
   }
 
   dimension: sx36 {
+    description: "Sx36."
     hidden: yes
     type: number
     sql: ${TABLE}.SX36 ;;
   }
 
   dimension: sx51 {
+    description: "Sx51."
     hidden: yes
     type: number
     sql: ${TABLE}.SX51 ;;
   }
 
   dimension: sx52 {
+    description: "Sx52."
     hidden: yes
     type: number
     sql: ${TABLE}.SX52 ;;
   }
 
   dimension: sx53 {
+    description: "Sx53."
     hidden: yes
     type: number
     sql: ${TABLE}.SX53 ;;
   }
 
   dimension: sx55 {
+    description: "Sx55."
     hidden: yes
     type: number
     sql: ${TABLE}.SX55 ;;
   }
 
   dimension: sx56 {
+    description: "Sx56."
     hidden: yes
     type: number
     sql: ${TABLE}.SX56 ;;
   }
 
   dimension: sx57 {
+    description: "Sx57."
     hidden: yes
     type: number
     sql: ${TABLE}.SX57 ;;
   }
 
   dimension: tavg {
+    description: "Tavg."
     hidden: yes
     type: number
     sql: ${TABLE}.TAVG ;;
   }
 
   dimension: thic {
+    description: "Thic."
     hidden: yes
     type: number
     sql: ${TABLE}.THIC ;;
   }
 
   dimension: tmax {
+    description: "Max Temperature (°C)."
     label: "Max Temperature (°C)"
     type: number
     sql: ${TABLE}.TMAX/10.0 ;;
   }
 
   dimension: tmin {
+    description: "Min Temperature (°C)."
     label: "Min Temperature (°C)"
     type: number
     sql: ${TABLE}.TMIN/10.0 ;;
   }
 
   dimension: tobs {
+    description: "Tobs."
     hidden: yes
     type: number
     sql: ${TABLE}.TOBS ;;
   }
 
   dimension: tsun {
+    description: "Tsun."
     hidden: yes
     type: number
     sql: ${TABLE}.TSUN ;;
   }
 
   dimension: wdf2 {
+    description: "Wdf2."
     hidden: yes
     type: number
     sql: ${TABLE}.WDF2 ;;
   }
 
   dimension: wdf5 {
+    description: "Wdf5."
     hidden: yes
     type: number
     sql: ${TABLE}.WDF5 ;;
   }
 
   dimension: wdfg {
+    description: "Wdfg."
     hidden: yes
     type: number
     sql: ${TABLE}.WDFG ;;
   }
 
   dimension: wdmv {
+    description: "Wdmv."
     hidden: yes
     type: number
     sql: ${TABLE}.WDMV ;;
   }
 
   dimension: wesd {
+    description: "Wesd."
     hidden: yes
     type: number
     sql: ${TABLE}.WESD ;;
   }
 
   dimension: wesf {
+    description: "Wesf."
     hidden: yes
     type: number
     sql: ${TABLE}.WESF ;;
   }
 
   dimension: wsf2 {
+    description: "Wsf2."
     hidden: yes
     type: number
     sql: ${TABLE}.WSF2 ;;
   }
 
   dimension: wsf5 {
+    description: "Wsf5."
     hidden: yes
     type: number
     sql: ${TABLE}.WSF5 ;;
   }
 
   dimension: wsfg {
+    description: "Wsfg."
     hidden: yes
     type: number
     sql: ${TABLE}.WSFG ;;
   }
 
   dimension: wsfi {
+    description: "Wsfi."
     hidden: yes
     type: number
     sql: ${TABLE}.WSFI ;;
   }
 
   dimension: wt01 {
+    description: "Wt01."
     hidden: yes
     type: number
     sql: ${TABLE}.WT01 ;;
   }
 
   dimension: wt02 {
+    description: "Wt02."
     hidden: yes
     type: number
     sql: ${TABLE}.WT02 ;;
   }
 
   dimension: wt03 {
+    description: "Wt03."
     hidden: yes
     type: number
     sql: ${TABLE}.WT03 ;;
   }
 
   dimension: wt04 {
+    description: "Wt04."
     hidden: yes
     type: number
     sql: ${TABLE}.WT04 ;;
   }
 
   dimension: wt05 {
+    description: "Wt05."
     hidden: yes
     type: number
     sql: ${TABLE}.WT05 ;;
   }
 
   dimension: wt06 {
+    description: "Wt06."
     hidden: yes
     type: number
     sql: ${TABLE}.WT06 ;;
   }
 
   dimension: wt07 {
+    description: "Wt07."
     hidden: yes
     type: number
     sql: ${TABLE}.WT07 ;;
   }
 
   dimension: wt08 {
+    description: "Wt08."
     hidden: yes
     type: number
     sql: ${TABLE}.WT08 ;;
   }
 
   dimension: wt09 {
+    description: "Wt09."
     hidden: yes
     type: number
     sql: ${TABLE}.WT09 ;;
   }
 
   dimension: wt10 {
+    description: "Wt10."
     hidden: yes
     type: number
     sql: ${TABLE}.WT10 ;;
   }
 
   dimension: wt11 {
+    description: "Wt11."
     hidden: yes
     type: number
     sql: ${TABLE}.WT11 ;;
   }
 
   dimension: wt15 {
+    description: "Wt15."
     hidden: yes
     type: number
     sql: ${TABLE}.WT15 ;;
   }
 
   dimension: wt16 {
+    description: "Wt16."
     hidden: yes
     type: number
     sql: ${TABLE}.WT16 ;;
   }
 
   dimension: wt17 {
+    description: "Wt17."
     hidden: yes
     type: number
     sql: ${TABLE}.WT17 ;;
   }
 
   dimension: wt18 {
+    description: "Wt18."
     hidden: yes
     type: number
     sql: ${TABLE}.WT18 ;;
   }
 
   dimension: wt22 {
+    description: "Wt22."
     hidden: yes
     type: number
     sql: ${TABLE}.WT22 ;;
@@ -670,6 +746,7 @@ view: store_weather {
   ##### DERIVED DIMENSIONS #####
 
   dimension: pk {
+    description: "Pk."
     hidden: yes
     primary_key: yes
     type: string
@@ -679,18 +756,21 @@ view: store_weather {
   ##### MEASURES #####
 
   measure: average_max_temparature {
+    description: "Average max temparature for the selected rows."
     type: average
     sql: ${tmax} ;;
     value_format: "#,##0.0 \" °C\""
   }
 
   measure: average_min_temparature {
+    description: "Average min temparature for the selected rows."
     type: average
     sql: ${tmin} ;;
     value_format: "#,##0.0 \" °C\""
   }
 
   measure: average_daily_precipitation {
+    description: "Average daily precipitation for the selected rows."
     type: average
     sql: ${prcp} ;;
     value_format: "#,##0.0 \" mm\""
